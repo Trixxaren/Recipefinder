@@ -1,7 +1,13 @@
+import Sidebar from "./components/Sidebar";
+import HomePage from "./pages/HomePage";
+
 function App() {
   return (
     <>
-      <h1 className="text-red-400 text-5xl bg-slate-600">hello world!</h1>
+      <div className="flex">
+        <Sidebar />
+        <HomePage />
+      </div>
     </>
   );
 }
