@@ -7,12 +7,11 @@ function App() {
   return (
     <>
       <div className="flex">
-        {/* <Sidebar /> */}
+        <Sidebar />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/favorites" element={<FavoritesPage />} />
         </Routes>
-        <HomePage />
       </div>
     </>
   );
