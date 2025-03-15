@@ -1,3 +1,5 @@
+import { Home } from "lucide-react";
+
 const Sidebar = () => {
   return (
     <>
@@ -17,6 +19,10 @@ const DesktopSidebar = () => {
           <img src="/mobile-logo.svg" alt="logo" className="block md:hidden" />
         </div>
         <ul className="flex flex-col items-center md:items-start gap-8"></ul>
+        <link to={"/"} className="flex gap-1">
+          <Home />
+          <span className="font-bold hidden md:block">Home</span>
+        </link>
       </div>
     </div>
   );
