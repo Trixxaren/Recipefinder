@@ -1,4 +1,4 @@
-import { Search, Soup } from "lucide-react";
+import { Heart, Search, Soup } from "lucide-react";
 
 const HomePage = () => {
   return (
@@ -32,6 +32,12 @@ const HomePage = () => {
               />
               <div className="absolute bottom-2 left-2 bg-white rounded-full p-1 cursor-pointer flex items-center gap-1 text-sm">
                 <Soup size={16} /> 4 servings
+              </div>
+              <div className="absolute top-1 right-2 bg-white rounded-full p-1 cursor-pointer">
+                <Heart
+                  size={20}
+                  className="hover:fill-red-500 hover:text-red-500"
+                />
               </div>
             </a>
           </div>
