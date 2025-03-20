@@ -1,7 +1,34 @@
 import { Search } from "lucide-react";
 import RecipeCard from "../components/RecipeCard";
+import { useEffect, useState } from "react";
 
 const HomePage = () => {
+  const [recipes, setRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchRecipes = async (searchQuery) => {
+    setLoading(true);
+    setRecipes([]);
+    try {
+      const res = await fetch(
+        `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`
+      );
+      const data = await res.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchRecipes("chicken");
+    };
+    fetchData();
+  }, []);
+
   return (
     <div className="bg-[#faf9fb] p-10 flex-1">
       <div className="max-w-screen-lg mx-auto">
