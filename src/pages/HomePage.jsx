@@ -14,7 +14,7 @@ const HomePage = () => {
         `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`
       );
       const data = await res.json();
-      console.log(data);
+      setRecipes(data.meals);
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -24,11 +24,12 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetchRecipes("chicken");
+      await fetchRecipes("Chicken");
     };
     fetchData();
   }, []);
 
+  // meals-strYoutube
   return (
     <div className="bg-[#faf9fb] p-10 flex-1">
       <div className="max-w-screen-lg mx-auto">
@@ -50,16 +51,17 @@ const HomePage = () => {
         </p>
 
         <div className="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {/* 1st recipe */}
-          <RecipeCard />
-          <RecipeCard />
-          <RecipeCard />
-          <RecipeCard />
-          <RecipeCard />
-          <RecipeCard />
-          <RecipeCard />
-          <RecipeCard />
-          <RecipeCard />
+          {loading &&
+            [...Array(9)].map((_, index) => (
+              <div key={index} className="flex flex-col gap-4 w-full">
+                <div className="skeleton h-32 w-full"></div>
+                <div className="flex justify-between">
+                  <div className="skeleton h-4 w-28"></div>
+                  <div className="skeleton h-4 w-24"></div>
+                </div>
+                <div className="skeleton h-4 w-1/2"></div>
+              </div>
+            ))}
         </div>
       </div>
     </div>
