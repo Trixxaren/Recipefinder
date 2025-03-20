@@ -14,7 +14,8 @@ const HomePage = () => {
         `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`
       );
       const data = await res.json();
-      setRecipes(data.meals);
+      setRecipes(data.meals || []);
+      console.log(data.meals);
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -24,12 +25,11 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetchRecipes("Chicken");
+      await fetchRecipes("a");
     };
     fetchData();
   }, []);
 
-  // meals-strYoutube
   return (
     <div className="bg-[#faf9fb] p-10 flex-1">
       <div className="max-w-screen-lg mx-auto">
@@ -40,6 +40,7 @@ const HomePage = () => {
               type="text"
               className="text-sm md:text-md flex-1"
               placeholder="Vad vill du laga idag?"
+              onChange={(e) => fetchRecipes(e.target.value)}
             />
           </label>
         </form>
@@ -51,6 +52,11 @@ const HomePage = () => {
         </p>
 
         <div className="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {!loading &&
+            recipes.map((meal, index) => (
+              <RecipeCard key={index} meals={meal} />
+            ))}
+
           {loading &&
             [...Array(9)].map((_, index) => (
               <div key={index} className="flex flex-col gap-4 w-full">
