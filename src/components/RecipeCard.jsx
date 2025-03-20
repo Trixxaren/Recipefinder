@@ -1,4 +1,4 @@
-import { Flame, Heart, HeartPulse, Soup } from "lucide-react";
+import { Flame, Heart, Soup, Vegan, Wheat } from "lucide-react";
 
 // Lista på vanliga glutenhaltiga ingredienser
 const glutenFreeIngredients = [
@@ -56,6 +56,9 @@ const RecipeCard = ({ meals }) => {
   const glutenStatus = isGlutenFree(ingredients); // Kolla om receptet är glutenfritt
   const calories = getCalories(ingredients); // Hämta kalorier
 
+  // Kontrollera om receptet är veganskt
+  const isVegan = meals.strCategory === "Vegan"; // Om strCategory är Vegan
+
   return (
     <div className="flex flex-col rounded-md bg-[#ecf7d4] overflow-hidden p-3 relative">
       <a
@@ -71,7 +74,7 @@ const RecipeCard = ({ meals }) => {
         />
         <div className="absolute bottom-2 left-2 bg-white rounded-full p-1 cursor-pointer flex items-center gap-1 text-sm">
           <Soup size={16} /> 4:a personer{" "}
-          {/* Här kan du eventuellt göra detta dynamiskt om du har portionsinformation, finns ej i MEALDB ändra till något annat? */}
+          {/* Här kan du eventuellt göra detta dynamiskt om du har portionsinformation, finns ej i MEALDB */}
         </div>
         <div className="absolute top-1 right-2 bg-white rounded-full p-1 cursor-pointer">
           <Heart size={20} className="hover:fill-red-500 hover:text-red-500" />
@@ -83,7 +86,7 @@ const RecipeCard = ({ meals }) => {
       <p className="my-2">{meals.strArea} kitchen</p>
       <div className="flex gap-2 mt-auto">
         <div className="flex gap-1 bg-[#d6f497] items-center p-1 rounded-md">
-          <HeartPulse size={16} />
+          <Wheat size={16} />
           <span className="text-sm tracking-tighter font-semibold">
             {glutenStatus ? "Glutenfri" : "Innehåller gluten"}{" "}
           </span>
@@ -92,6 +95,13 @@ const RecipeCard = ({ meals }) => {
           <Flame size={16} />
           <span className="text-sm tracking-tighter font-semibold">
             {calories} kcal
+          </span>
+        </div>
+        <div className="flex gap-1 bg-[#d6f497] items-center p-1 rounded-md">
+          <Vegan size={16} />
+          <span className="text-sm tracking-tighter font-semibold">
+            {isVegan ? "Veganskt" : "Inte Veganskt"}{" "}
+            {/* Dynamiskt baserat på strCategory */}
           </span>
         </div>
       </div>
