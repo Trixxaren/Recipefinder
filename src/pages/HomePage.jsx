@@ -38,7 +38,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="bg-[#faf9fb] p-10 flex-1">
+    <div className="bg-[#faf9fb] p-10 flex-10">
       <div className="max-w-screen-lg mx-auto">
         <form>
           <label className="input shadow-md flex items-center gap-2 w-full">

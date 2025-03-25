@@ -95,13 +95,8 @@ const RecipeCard = ({ meals }) => {
   return (
     <div className="flex flex-col rounded-md border-2 border-grey overflow-hidden p-3 relative">
       <div className="relative w-full h-48">
-        {/* Länka till InstructionsPage och skicka state via Link */}
-        <Link
-          to={{
-            pathname: `/instructions/${meals.idMeal}`, // Skickar ID:et i URL:en
-            state: { meal: meals }, // Här skickar vi hela måltiden via state
-          }}
-        >
+        {/* Länka till InstructionsPage och skicka ID via URL */}
+        <Link to={`/instructions/${meals.idMeal}`}>
           <img
             src={meals.strMealThumb}
             alt={meals.strMeal}

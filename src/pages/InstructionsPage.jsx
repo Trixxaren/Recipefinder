@@ -1,86 +1,79 @@
-// InstructionsPage.jsx
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const InstructionsPage = () => {
-  const location = useLocation(); // Hämta location-objektet från React Router
-  console.log("Location state: ", location.state); // Debugging för att se vad vi får i state
+  const { id } = useParams();
+  const location = useLocation();
+  const [mealData, setMealData] = useState(null);
 
-  const { meal } = location.state || {}; // Hämta meal från state, om det finns
+  // Om du får meal-data från state, sätt den
+  const mealFromState = location.state?.meal;
 
-  // Kontrollera om 'meal' finns
-  if (!meal) {
-    return <p>Receptdata saknas!</p>; // Om meal är undefined, visa ett meddelande
-  }
-
-  console.log("Meal received: ", meal); // För felsökning, kontrollera om meal är korrekt
-
-  // Skapa en lista på ingredienser och deras mått
-  const ingredients = [];
-  for (let i = 1; i <= 20; i++) {
-    if (meal[`strIngredient${i}`] && meal[`strIngredient${i}`] !== "") {
-      ingredients.push({
-        ingredient: meal[`strIngredient${i}`],
-        measure: meal[`strMeasure${i}`],
-      });
+  useEffect(() => {
+    if (mealFromState) {
+      setMealData(mealFromState);
+    } else {
+      // Hämta receptdata från API om det inte finns i state
+      fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
+        .then((response) => response.json())
+        .then((data) => setMealData(data.meals[0]))
+        .catch((error) => console.error(error));
     }
+  }, [id, mealFromState]);
+
+  if (!mealData) {
+    return <div className="text-center p-4">Receptdata saknas...</div>;
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen py-10 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-        {/* Bild */}
-        <div className="relative w-full h-80">
+    <div className="min-h-screen bg-gray-50 py-6 flex flex-col items-center">
+      <div className="max-w-4xl w-full bg-gray-50">
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
+          {mealData.strMeal}
+        </h1>
+
+        <div className="flex justify-center mb-6">
           <img
-            src={meal.strMealThumb}
-            alt={meal.strMeal}
-            className="w-full h-full object-cover rounded-t-lg"
+            src={mealData.strMealThumb}
+            alt={mealData.strMeal}
+            className="rounded-lg w-full max-w-xl object-cover"
           />
         </div>
 
-        <div className="p-6">
-          {/* Receptnamn, kategori och område */}
-          <h1 className="text-3xl font-bold text-gray-800">{meal.strMeal}</h1>
-          <p className="mt-2 text-lg text-gray-600">
-            <strong>Kategori:</strong> {meal.strCategory} |{" "}
-            <strong>Area:</strong> {meal.strArea}
-          </p>
-
-          {/* Ingredienser */}
-          <div className="mt-6">
-            <h2 className="text-2xl font-semibold text-gray-800">
-              Ingredienser
-            </h2>
-            <ul className="mt-4 space-y-2">
-              {ingredients.map((ingredient, index) => (
-                <li key={index} className="flex justify-between text-gray-700">
-                  <span>{ingredient.ingredient}</span>
-                  <span className="font-semibold">{ingredient.measure}</span>
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">
+          Ingredienser
+        </h2>
+        <ul className="list-inside list-disc space-y-2 text-gray-600 mb-6">
+          {/* Ingredienslista  */}
+          {Array.from({ length: 20 }).map((_, index) => {
+            const ingredient = mealData[`strIngredient${index + 1}`];
+            const measure = mealData[`strMeasure${index + 1}`];
+            if (ingredient) {
+              return (
+                <li key={index}>
+                  <span className="font-semibold">{measure}</span> {ingredient}
                 </li>
-              ))}
-            </ul>
-          </div>
+              );
+            }
+            return null;
+          })}
+        </ul>
 
-          {/* Instruktioner */}
-          <div className="mt-6">
-            <h2 className="text-2xl font-semibold text-gray-800">
-              Instruktioner
-            </h2>
-            <p className="mt-4 text-gray-700">{meal.strInstructions}</p>
-          </div>
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">
+          Instruktioner
+        </h2>
+        <p className="text-gray-600">{mealData.strInstructions}</p>
 
-          {/* YouTube Video (om det finns) */}
-          {meal.strYoutube && (
-            <div className="mt-6">
-              <h2 className="text-2xl font-semibold text-gray-800">Video</h2>
-              <a
-                href={meal.strYoutube}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:underline"
-              >
-                Klicka här för att se videon
-              </a>
-            </div>
+        <div className="mt-8 text-center">
+          {mealData.strYoutube && (
+            <a
+              href={mealData.strYoutube}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-6 py-2 bg-red-500 text-white font-semibold rounded-full shadow-md hover:bg-red-600"
+            >
+              Titta på Youtube-video
+            </a>
           )}
         </div>
       </div>
