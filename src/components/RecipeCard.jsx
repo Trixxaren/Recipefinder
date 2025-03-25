@@ -1,4 +1,4 @@
-import { Flame, Heart, Soup, Vegan, Wheat } from "lucide-react";
+import { Flame, Heart, Soup, Vegan, Wheat, Youtube } from "lucide-react";
 
 // Lista på vanliga glutenhaltiga ingredienser
 const glutenFreeIngredients = [
@@ -29,8 +29,6 @@ const isGlutenFree = (ingredients) => {
 
 // Dummy funktion för att hämta kalorier (kan ersättas med riktig API eller beräkning)
 const getCalories = (ingredients) => {
-  // Här kan du anropa ett externt API eller använda en kaloridatabas för att få det faktiska kaloriantalet.
-  // För nu använder vi ett dummy-värde. ev ladda ner ett API och fetcha
   return 450; // Dummy-värde, 450 kcal per rätt
 };
 
@@ -60,13 +58,11 @@ const RecipeCard = ({ meals }) => {
   const isVegan = meals.strCategory === "Vegan"; // Om strCategory är Vegan
 
   return (
-    <div className="flex flex-col rounded-md bg-[#ecf7d4] overflow-hidden p-3 relative">
-      <a
-        href={meals.strYoutube}
-        className="relative h-32"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+    <div className="flex flex-col rounded-md border-2 border-grey overflow-hidden p-3 relative">
+      {/* Bilden utan länk, håll bildstorlek konsekvent */}
+      <div className="relative w-full h-48">
+        {" "}
+        {/* Ange en specifik höjd för att kontrollera storleken */}
         <img
           src={meals.strMealThumb}
           alt={meals.strMeal}
@@ -74,35 +70,51 @@ const RecipeCard = ({ meals }) => {
         />
         <div className="absolute bottom-2 left-2 bg-white rounded-full p-1 cursor-pointer flex items-center gap-1 text-sm">
           <Soup size={16} /> 4:a personer{" "}
-          {/* Här kan du eventuellt göra detta dynamiskt om du har portionsinformation, finns ej i MEALDB */}
         </div>
         <div className="absolute top-1 right-2 bg-white rounded-full p-1 cursor-pointer">
           <Heart size={20} className="hover:fill-red-500 hover:text-red-500" />
         </div>
-      </a>
+      </div>
+
       <div className="flex mt-1">
         <p className="font-bold tracking-wide">{meals.strMeal}</p>
       </div>
       <p className="my-2">{meals.strArea} kitchen</p>
       <div className="flex gap-2 mt-auto">
-        <div className="flex gap-1 bg-[#d6f497] items-center p-1 rounded-md">
+        <div className="flex gap-1 bg-[#b6bba9b0] items-center p-1 rounded-md">
           <Wheat size={16} />
           <span className="text-sm tracking-tighter font-semibold">
-            {glutenStatus ? "Glutenfri" : "Innehåller gluten"}{" "}
+            {glutenStatus ? "Glutenfri" : "Gluten"}{" "}
           </span>
         </div>
-        <div className="flex gap-1 bg-[#d6f497] items-center p-1 rounded-md">
+        <div className="flex gap-1 bg-[#b6bba9b0] items-center p-1 rounded-md">
           <Flame size={16} />
           <span className="text-sm tracking-tighter font-semibold">
             {calories} kcal
           </span>
         </div>
-        <div className="flex gap-1 bg-[#d6f497] items-center p-1 rounded-md">
-          <Vegan size={16} />
-          <span className="text-sm tracking-tighter font-semibold">
-            {isVegan ? "Veganskt" : "Inte Veganskt"}{" "}
-            {/* Dynamiskt baserat på strCategory */}
-          </span>
+        {isVegan && (
+          <div className="flex gap-1 bg-[#b6bba9b0] items-center p-1 rounded-md">
+            <Vegan size={16} />
+            <span className="text-sm tracking-tighter font-semibold">
+              Veganskt
+            </span>
+          </div>
+        )}
+
+        {/* YouTube-knappen med länk */}
+        <div className="flex gap-1 bg-[#b6bba9b0] items-center p-1 rounded-md cursor-pointer">
+          <a
+            href={meals.strYoutube}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1"
+          >
+            <Youtube size={16} />
+            <span className="text-sm tracking-tighter font-semibold">
+              YouTube
+            </span>
+          </a>
         </div>
       </div>
     </div>

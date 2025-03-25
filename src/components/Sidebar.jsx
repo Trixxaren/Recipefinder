@@ -22,15 +22,15 @@ const DesktopSidebar = () => {
         </div>
         <ul className="flex flex-col items-center md:items-start gap-8">
           <li>
-            <Link to="/" className="flex gap-1">
+            <Link to="/" className="flex gap-1 hover:underline">
               <Home size={24} />
               <span className="font-bold hidden md:block">Home</span>
             </Link>
           </li>
           <li>
-            <Link to="/favorites" className="flex gap-1">
+            <Link to="/favorites" className="flex gap-1 hover:underline">
               <Heart size={24} />
-              <span className="font-bold hidden md:block">Favorites</span>
+              <span className="font-bold hidden md:block ">Favorites</span>
             </Link>
           </li>
         </ul>
