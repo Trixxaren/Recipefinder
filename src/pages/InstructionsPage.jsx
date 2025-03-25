@@ -1,5 +1,6 @@
 import { useLocation, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { Youtube } from "lucide-react";
 
 const InstructionsPage = () => {
   const { id } = useParams();
@@ -70,9 +71,12 @@ const InstructionsPage = () => {
               href={mealData.strYoutube}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-6 py-2 bg-red-500 text-white font-semibold rounded-full shadow-md hover:bg-red-600"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-[#b6bba9b0] text-black font-semibold rounded-full shadow-md hover:bg-[#b6bba9f9] text-sm"
             >
-              Titta på Youtube-video
+              <Youtube size={24} />
+              <span className="text-sm tracking-tighter font-semibold">
+                YouTube
+              </span>
             </a>
           )}
         </div>

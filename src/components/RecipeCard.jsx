@@ -100,7 +100,7 @@ const RecipeCard = ({ meals }) => {
           <img
             src={meals.strMealThumb}
             alt={meals.strMeal}
-            className="rounded-md w-full h-full object-cover cursor-pointer"
+            className="rounded-md w-full h-full object-cover cursor-pointer hover:opacity-80"
           />
         </Link>
         <div
@@ -111,7 +111,7 @@ const RecipeCard = ({ meals }) => {
           }}
         >
           <Heart
-            size={20}
+            size={24}
             className={`hover:fill-red-400 hover:text-red-500 ${
               isFavorite ? "fill-red-500 text-red-500" : ""
             }`}
@@ -140,7 +140,7 @@ const RecipeCard = ({ meals }) => {
           </span>
         </div>
 
-        <div className="flex gap-1 bg-[#b6bba9b0] items-center p-1 rounded-md cursor-pointer">
+        <div className="flex gap-1 bg-[#b6bba9b0] hover:bg-[#b6bba9f9] items-center p-1 rounded-md cursor-pointer">
           <a
             href={meals.strYoutube}
             target="_blank"
