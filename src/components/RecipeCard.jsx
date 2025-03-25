@@ -1,4 +1,5 @@
 import { Flame, Heart, Wheat, Youtube } from "lucide-react";
+import { useState, useEffect } from "react";
 
 // Lista på vanliga glutenhaltiga ingredienser
 const glutenFreeIngredients = [
@@ -33,6 +34,40 @@ const getCalories = (ingredients) => {
   return randomNr;
 };
 
+// Hanterar favoriter
+const useFavorite = (meals) => {
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    // Kontrollera om receptet finns i favoriter när komponenten laddas
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    const isRecipeInFavorites = favorites.some(
+      (fav) => fav.strMeal === meals.strMeal
+    );
+    setIsFavorite(isRecipeInFavorites);
+  }, [meals]);
+
+  const toggleFavorite = () => {
+    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    const isRecipeAlreadyInFavorites = favorites.some(
+      (fav) => fav.strMeal === meals.strMeal
+    );
+
+    if (isRecipeAlreadyInFavorites) {
+      favorites = favorites.filter((fav) => fav.strMeal !== meals.strMeal);
+    } else {
+      favorites.push(meals);
+    }
+
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+
+    // Uppdatera isFavorite baserat på om det lades till eller togs bort
+    setIsFavorite(!isRecipeAlreadyInFavorites);
+  };
+
+  return [isFavorite, toggleFavorite];
+};
+
 const RecipeCard = ({ meals }) => {
   const ingredients = [
     meals.strIngredient1,
@@ -52,6 +87,8 @@ const RecipeCard = ({ meals }) => {
     meals.strIngredient15,
   ];
 
+  const [isFavorite, toggleFavorite] = useFavorite(meals);
+
   const glutenStatus = isGlutenFree(ingredients); // Kolla om receptet är glutenfritt
   const calories = getCalories(ingredients); // Hämta kalorier
 
@@ -59,15 +96,24 @@ const RecipeCard = ({ meals }) => {
     <div className="flex flex-col rounded-md border-2 border-grey overflow-hidden p-3 relative">
       {/* Bilden utan länk, håll bildstorlek konsekvent */}
       <div className="relative w-full h-48">
-        {" "}
-        {/* Ange en specifik höjd för att kontrollera storleken */}
         <img
           src={meals.strMealThumb}
           alt={meals.strMeal}
           className="rounded-md w-full h-full object-cover cursor-pointer"
         />
-        <div className="absolute top-1 right-2 bg-white rounded-full p-1 cursor-pointer">
-          <Heart size={20} className="hover:fill-red-500 hover:text-red-500" />
+        <div
+          className="absolute top-1 right-2 bg-white rounded-full p-1 cursor-pointer"
+          onClick={(e) => {
+            e.preventDefault();
+            toggleFavorite();
+          }}
+        >
+          <Heart
+            size={20}
+            className={`hover:fill-red-400 hover:text-red-500 ${
+              isFavorite ? "fill-red-500 text-red-500" : ""
+            }`}
+          />
         </div>
       </div>
 

@@ -24,13 +24,13 @@ const DesktopSidebar = () => {
           <li>
             <Link to="/" className="flex gap-1 hover:underline">
               <Home size={24} />
-              <span className="font-bold hidden md:block">Home</span>
+              <span className="font-bold hidden md:block">Hem</span>
             </Link>
           </li>
           <li>
             <Link to="/favorites" className="flex gap-1 hover:underline">
               <Heart size={24} />
-              <span className="font-bold hidden md:block ">Favorites</span>
+              <span className="font-bold hidden md:block ">Favoriter</span>
             </Link>
           </li>
         </ul>
