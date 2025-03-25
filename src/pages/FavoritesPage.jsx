@@ -15,8 +15,8 @@ const FavoritesPage = () => {
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {favorites.map((meals) => (
-            <RecipeCard key={meals.strMeal} meals={meals} />
+          {favorites.map((meals, index) => (
+            <RecipeCard key={`${meals.strMeal}-${index}`} meals={meals} />
           ))}
         </div>
       </div>

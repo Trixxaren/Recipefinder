@@ -1,5 +1,6 @@
 import { Flame, Heart, Wheat, Youtube } from "lucide-react";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 // Lista på vanliga glutenhaltiga ingredienser
 const glutenFreeIngredients = [
@@ -15,11 +16,14 @@ const glutenFreeIngredients = [
   "corn",
 ];
 
+// Kolla om en ingrediens är glutenfri
 const isGlutenFree = (ingredients) => {
   for (let ingredient of ingredients) {
     if (
-      (ingredient && ingredient.toLowerCase().includes("flour")) ||
-      ingredient.toLowerCase().includes("wheat")
+      ingredient &&
+      typeof ingredient === "string" &&
+      (ingredient.toLowerCase().includes("flour") ||
+        ingredient.toLowerCase().includes("wheat"))
     ) {
       return false;
     }
@@ -91,11 +95,19 @@ const RecipeCard = ({ meals }) => {
   return (
     <div className="flex flex-col rounded-md border-2 border-grey overflow-hidden p-3 relative">
       <div className="relative w-full h-48">
-        <img
-          src={meals.strMealThumb}
-          alt={meals.strMeal}
-          className="rounded-md w-full h-full object-cover cursor-pointer"
-        />
+        {/* Länka till InstructionsPage och skicka state via Link */}
+        <Link
+          to={{
+            pathname: `/instructions/${meals.idMeal}`, // Skickar ID:et i URL:en
+            state: { meal: meals }, // Här skickar vi hela måltiden via state
+          }}
+        >
+          <img
+            src={meals.strMealThumb}
+            alt={meals.strMeal}
+            className="rounded-md w-full h-full object-cover cursor-pointer"
+          />
+        </Link>
         <div
           className="absolute top-1 right-2 bg-white rounded-full p-1 cursor-pointer"
           onClick={(e) => {
@@ -118,7 +130,6 @@ const RecipeCard = ({ meals }) => {
       <p className="my-2">
         {meals.strArea} kitchen <br />
         Category: {meals.strCategory}
-        {/* ev ta bort Category, rådfråga */}
       </p>
       <div className="flex gap-2 mt-auto">
         <div className="flex gap-1 bg-[#b6bba9b0] items-center p-1 rounded-md">

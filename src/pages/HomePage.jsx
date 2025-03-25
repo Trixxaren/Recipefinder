@@ -34,10 +34,7 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      await fetchRecipes("b");
-    };
-    fetchData();
+    fetchRecipes("b");
   }, []);
 
   return (
@@ -82,7 +79,7 @@ const HomePage = () => {
           {!loading &&
             recipes.length > 0 &&
             recipes.map((meal, index) => (
-              <RecipeCard key={index} meals={meal} />
+              <RecipeCard key={meal.idMeal || index} meals={meal} />
             ))}
         </div>
       </div>
