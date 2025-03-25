@@ -29,7 +29,8 @@ const isGlutenFree = (ingredients) => {
 
 // Dummy funktion för att hämta kalorier (kan ersättas med riktig API eller beräkning)
 const getCalories = (ingredients) => {
-  return 450; // Dummy-värde, 450 kcal per rätt
+  const randomNr = Math.floor(Math.random() * 151) + 450;
+  return randomNr; // Dummy-värde, 450 kcal per rätt
 };
 
 const RecipeCard = ({ meals }) => {
@@ -54,9 +55,6 @@ const RecipeCard = ({ meals }) => {
   const glutenStatus = isGlutenFree(ingredients); // Kolla om receptet är glutenfritt
   const calories = getCalories(ingredients); // Hämta kalorier
 
-  // Kontrollera om receptet är veganskt
-  const isVegan = meals.strCategory === "Vegan"; // Om strCategory är Vegan
-
   return (
     <div className="flex flex-col rounded-md border-2 border-grey overflow-hidden p-3 relative">
       {/* Bilden utan länk, håll bildstorlek konsekvent */}
@@ -68,9 +66,6 @@ const RecipeCard = ({ meals }) => {
           alt={meals.strMeal}
           className="rounded-md w-full h-full object-cover cursor-pointer"
         />
-        <div className="absolute bottom-2 left-2 bg-white rounded-full p-1 cursor-pointer flex items-center gap-1 text-sm">
-          <Soup size={16} /> 4:a personer{" "}
-        </div>
         <div className="absolute top-1 right-2 bg-white rounded-full p-1 cursor-pointer">
           <Heart size={20} className="hover:fill-red-500 hover:text-red-500" />
         </div>
@@ -93,14 +88,6 @@ const RecipeCard = ({ meals }) => {
             {calories} kcal
           </span>
         </div>
-        {isVegan && (
-          <div className="flex gap-1 bg-[#b6bba9b0] items-center p-1 rounded-md">
-            <Vegan size={16} />
-            <span className="text-sm tracking-tighter font-semibold">
-              Veganskt
-            </span>
-          </div>
-        )}
 
         {/* YouTube-knappen med länk */}
         <div className="flex gap-1 bg-[#b6bba9b0] items-center p-1 rounded-md cursor-pointer">
