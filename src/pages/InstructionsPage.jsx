@@ -7,14 +7,12 @@ const InstructionsPage = () => {
   const location = useLocation();
   const [mealData, setMealData] = useState(null);
 
-  // Om du får meal-data från state, sätt den
   const mealFromState = location.state?.meal;
 
   useEffect(() => {
     if (mealFromState) {
       setMealData(mealFromState);
     } else {
-      // Hämta receptdata från API om det inte finns i state
       fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
         .then((response) => response.json())
         .then((data) => setMealData(data.meals[0]))

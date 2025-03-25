@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import HomePage from "./pages/HomePage";
 import FavoritesPage from "./pages/FavoritesPage";
-import InstructionsPage from "./pages/InstructionsPage"; // Importera din InstructionsPage
+import InstructionsPage from "./pages/InstructionsPage";
 
 function App() {
   return (

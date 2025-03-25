@@ -16,7 +16,6 @@ const glutenFreeIngredients = [
   "corn",
 ];
 
-// Kolla om en ingrediens är glutenfri
 const isGlutenFree = (ingredients) => {
   for (let ingredient of ingredients) {
     if (
@@ -95,7 +94,6 @@ const RecipeCard = ({ meals }) => {
   return (
     <div className="flex flex-col rounded-md border-2 border-grey overflow-hidden p-3 relative">
       <div className="relative w-full h-48">
-        {/* Länka till InstructionsPage och skicka ID via URL */}
         <Link to={`/instructions/${meals.idMeal}`}>
           <img
             src={meals.strMealThumb}
