@@ -15,7 +15,6 @@ const glutenFreeIngredients = [
   "corn",
 ];
 
-// Funktion som kontrollerar om ett recept är glutenfritt
 const isGlutenFree = (ingredients) => {
   for (let ingredient of ingredients) {
     if (
@@ -28,18 +27,16 @@ const isGlutenFree = (ingredients) => {
   return true;
 };
 
-// Går att ersättas med kcal API
+// Går att ersättas med kcal API, ev om tid finns
 const getCalories = (ingredients) => {
   const randomNr = Math.floor(Math.random() * 151) + 450;
   return randomNr;
 };
 
-// Hanterar favoriter
 const useFavorite = (meals) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
-    // Kontrollera om receptet finns i favoriter när komponenten laddas
     const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
     const isRecipeInFavorites = favorites.some(
       (fav) => fav.strMeal === meals.strMeal
@@ -61,7 +58,6 @@ const useFavorite = (meals) => {
 
     localStorage.setItem("favorites", JSON.stringify(favorites));
 
-    // Uppdatera isFavorite baserat på om det lades till eller togs bort
     setIsFavorite(!isRecipeAlreadyInFavorites);
   };
 
@@ -89,12 +85,11 @@ const RecipeCard = ({ meals }) => {
 
   const [isFavorite, toggleFavorite] = useFavorite(meals);
 
-  const glutenStatus = isGlutenFree(ingredients); // Kolla om receptet är glutenfritt
-  const calories = getCalories(ingredients); // Hämta kalorier
+  const glutenStatus = isGlutenFree(ingredients);
+  const calories = getCalories(ingredients);
 
   return (
     <div className="flex flex-col rounded-md border-2 border-grey overflow-hidden p-3 relative">
-      {/* Bilden utan länk, håll bildstorlek konsekvent */}
       <div className="relative w-full h-48">
         <img
           src={meals.strMealThumb}
@@ -120,7 +115,11 @@ const RecipeCard = ({ meals }) => {
       <div className="flex mt-1">
         <p className="font-bold tracking-wide">{meals.strMeal}</p>
       </div>
-      <p className="my-2">{meals.strArea} kitchen</p>
+      <p className="my-2">
+        {meals.strArea} kitchen <br />
+        Category: {meals.strCategory}
+        {/* ev ta bort Category, rådfråga */}
+      </p>
       <div className="flex gap-2 mt-auto">
         <div className="flex gap-1 bg-[#b6bba9b0] items-center p-1 rounded-md">
           <Wheat size={16} />
@@ -135,7 +134,6 @@ const RecipeCard = ({ meals }) => {
           </span>
         </div>
 
-        {/* YouTube-knappen med länk */}
         <div className="flex gap-1 bg-[#b6bba9b0] items-center p-1 rounded-md cursor-pointer">
           <a
             href={meals.strYoutube}

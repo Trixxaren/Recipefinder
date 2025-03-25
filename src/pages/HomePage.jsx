@@ -5,12 +5,11 @@ import { useEffect, useState } from "react";
 const HomePage = () => {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [noResults, setNoResults] = useState(false); // För att hålla koll på om inga resultat hittades
+  const [noResults, setNoResults] = useState(false);
 
-  // Hämtar recepten baserat på sökfrågan
   const fetchRecipes = async (searchQuery) => {
     setLoading(true);
-    setNoResults(false); // Sätt till false när vi börjar söka
+    setNoResults(false);
 
     try {
       const res = await fetch(
@@ -18,27 +17,25 @@ const HomePage = () => {
       );
       const data = await res.json();
 
-      // Kollar om vi får några resultat
       if (data.meals && data.meals.length > 0) {
         setRecipes(data.meals);
-        setNoResults(false); // Vi har resultat
+        setNoResults(false);
       } else {
-        setRecipes([]); // Om inga resultat hittas, töm recepten
-        setNoResults(true); // Sätt noResults till true
+        setRecipes([]);
+        setNoResults(true);
       }
     } catch (error) {
       console.log(error.message);
-      setRecipes([]); // Om något går fel, töm recepten
-      setNoResults(true); // Vi har ett fel, visa att inga resultat hittades
+      setRecipes([]);
+      setNoResults(true);
     } finally {
       setLoading(false);
     }
   };
 
-  // Hämta standarddata när komponenten laddas
   useEffect(() => {
     const fetchData = async () => {
-      await fetchRecipes("a"); // Initial sökning
+      await fetchRecipes("b");
     };
     fetchData();
   }, []);
@@ -53,7 +50,7 @@ const HomePage = () => {
               type="text"
               className="text-sm md:text-md flex-1"
               placeholder="Vad vill du laga idag?"
-              onChange={(e) => fetchRecipes(e.target.value)} // Söker varje gång användaren skriver
+              onChange={(e) => fetchRecipes(e.target.value)}
             />
           </label>
         </form>
@@ -65,13 +62,11 @@ const HomePage = () => {
           Populära val
         </p>
 
-        {/* Meddelande om inga resultat hittas */}
         {noResults && !loading && (
           <p className="text-center text-red-500">Inga resultat hittades!</p>
         )}
 
         <div className="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {/* Om det är pågående laddning, visa skeleton loader */}
           {loading &&
             [...Array(9)].map((_, index) => (
               <div key={index} className="flex flex-col gap-4 w-full">
@@ -84,7 +79,6 @@ const HomePage = () => {
               </div>
             ))}
 
-          {/* Om recepten finns, rendera dem */}
           {!loading &&
             recipes.length > 0 &&
             recipes.map((meal, index) => (
