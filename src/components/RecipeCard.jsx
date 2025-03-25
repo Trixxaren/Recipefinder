@@ -1,4 +1,4 @@
-import { Flame, Heart, Soup, Vegan, Wheat, Youtube } from "lucide-react";
+import { Flame, Heart, Wheat, Youtube } from "lucide-react";
 
 // Lista på vanliga glutenhaltiga ingredienser
 const glutenFreeIngredients = [
@@ -27,10 +27,10 @@ const isGlutenFree = (ingredients) => {
   return true;
 };
 
-// Dummy funktion för att hämta kalorier (kan ersättas med riktig API eller beräkning)
+// Går att ersättas med kcal API
 const getCalories = (ingredients) => {
   const randomNr = Math.floor(Math.random() * 151) + 450;
-  return randomNr; // Dummy-värde, 450 kcal per rätt
+  return randomNr;
 };
 
 const RecipeCard = ({ meals }) => {
@@ -79,7 +79,7 @@ const RecipeCard = ({ meals }) => {
         <div className="flex gap-1 bg-[#b6bba9b0] items-center p-1 rounded-md">
           <Wheat size={16} />
           <span className="text-sm tracking-tighter font-semibold">
-            {glutenStatus ? "Glutenfri" : "Gluten"}{" "}
+            {glutenStatus ? "Glutenfri" : "Gluten"}
           </span>
         </div>
         <div className="flex gap-1 bg-[#b6bba9b0] items-center p-1 rounded-md">
