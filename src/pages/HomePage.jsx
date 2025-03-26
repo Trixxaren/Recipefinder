@@ -1,8 +1,7 @@
 import { Search } from "lucide-react";
 import RecipeCard from "../components/RecipeCard";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
-// Debounce hook
 const useDebounce = (value, delay = 1000) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
@@ -23,12 +22,15 @@ const HomePage = () => {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [noResults, setNoResults] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(""); // Spara inputvärdet
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const debouncedQuery = useDebounce(searchQuery, 1000); // Använd debounced värde med 3 sekunders timeout
+  const debouncedQuery = useDebounce(searchQuery, 1000);
 
-  // Funktion för att hämta recept
+  const isFetchingRef = useRef(false); // Ref för att hålla koll på om vi är i en fetch-process
+
   const fetchRecipes = async (searchQuery) => {
+    if (isFetchingRef.current) return;
+    isFetchingRef.current = true;
     setLoading(true);
     setNoResults(false);
 
@@ -51,15 +53,14 @@ const HomePage = () => {
       setNoResults(true);
     } finally {
       setLoading(false);
+      isFetchingRef.current = false;
     }
   };
 
-  // Gör ett initialt anrop när komponenten laddas
   useEffect(() => {
-    fetchRecipes("chicken"); // Hämta recept med en initial sökning (kan vara "chicken" eller vad du vill)
+    fetchRecipes("chicken");
   }, []);
 
-  // Gör ett anrop när debouncedQuery ändras
   useEffect(() => {
     if (debouncedQuery) {
       fetchRecipes(debouncedQuery);
@@ -77,7 +78,7 @@ const HomePage = () => {
               className="text-sm md:text-md flex-1"
               placeholder="Vad vill du laga idag?"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)} // Uppdatera searchQuery vid ändring
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </label>
         </form>
