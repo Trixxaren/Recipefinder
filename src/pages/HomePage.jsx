@@ -2,11 +2,32 @@ import { Search } from "lucide-react";
 import RecipeCard from "../components/RecipeCard";
 import { useEffect, useState } from "react";
 
+// Debounce hook
+const useDebounce = (value, delay = 1000) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+};
+
 const HomePage = () => {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [noResults, setNoResults] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(""); // Spara inputvärdet
 
+  const debouncedQuery = useDebounce(searchQuery, 1000); // Använd debounced värde med 3 sekunders timeout
+
+  // Funktion för att hämta recept
   const fetchRecipes = async (searchQuery) => {
     setLoading(true);
     setNoResults(false);
@@ -33,9 +54,17 @@ const HomePage = () => {
     }
   };
 
+  // Gör ett initialt anrop när komponenten laddas
   useEffect(() => {
-    fetchRecipes("b");
+    fetchRecipes("chicken"); // Hämta recept med en initial sökning (kan vara "chicken" eller vad du vill)
   }, []);
+
+  // Gör ett anrop när debouncedQuery ändras
+  useEffect(() => {
+    if (debouncedQuery) {
+      fetchRecipes(debouncedQuery);
+    }
+  }, [debouncedQuery]);
 
   return (
     <div className="bg-[#faf9fb] p-10 flex-10">
@@ -47,7 +76,8 @@ const HomePage = () => {
               type="text"
               className="text-sm md:text-md flex-1"
               placeholder="Vad vill du laga idag?"
-              onChange={(e) => fetchRecipes(e.target.value)}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)} // Uppdatera searchQuery vid ändring
             />
           </label>
         </form>
@@ -67,7 +97,7 @@ const HomePage = () => {
           {loading &&
             [...Array(9)].map((_, index) => (
               <div key={index} className="flex flex-col gap-4 w-full">
-                <div className="skeleton h-32 w-full"></div>
+                <div className="skeleton h-48 w-full"></div>
                 <div className="flex justify-between">
                   <div className="skeleton h-4 w-28"></div>
                   <div className="skeleton h-4 w-24"></div>

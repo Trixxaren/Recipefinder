@@ -43,7 +43,6 @@ const InstructionsPage = () => {
           Ingredienser
         </h2>
         <ul className="list-inside list-disc space-y-2 text-gray-600 mb-6">
-          {/* Ingredienslista  */}
           {Array.from({ length: 20 }).map((_, index) => {
             const ingredient = mealData[`strIngredient${index + 1}`];
             const measure = mealData[`strMeasure${index + 1}`];
