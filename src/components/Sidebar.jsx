@@ -14,6 +14,7 @@ export default Sidebar;
 
 const DesktopSidebar = () => {
   return (
+    // Sidebar för dator med olika "responsivitet tailwind keywords och 2st olika logotyper som jag byggt för att hantera olika skärm storlekar."
     <div className="p-3 md:p-10 border-r min-h-screen w-24 md:w-64 hidden sm:block">
       <div className="flex flex-col gap-20 sticky top-10 left-0">
         <div className="w-full">
@@ -26,6 +27,7 @@ const DesktopSidebar = () => {
               <Home size={24} />
               <span className="font-bold hidden md:block">Hem</span>
             </Link>
+            {/* Lucide links för olika ikoner i applikationen  */}
           </li>
           <li>
             <Link to="/favorites" className="flex gap-1 hover:underline">
@@ -38,7 +40,7 @@ const DesktopSidebar = () => {
     </div>
   );
 };
-
+// En mobil sidebar för att placera om vart home och favoriter knappen sitter beroende på mobilskärms storlek.
 const MobileSidebar = () => {
   return (
     <div
